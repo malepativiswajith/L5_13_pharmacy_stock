@@ -33,7 +33,9 @@ def setup_database() -> None:
 
 
 def find_patient(name: str) -> list[tuple[str, str]]:
-    """Return the patient ID and allergy for an exact, case-insensitive name."""
+    """Return the patient ID and allergy for an exact, case-insensitive
+    name.
+    """
     with connection:
         cursor = connection.execute(
             "SELECT id, allergy FROM patients WHERE name = ? COLLATE NOCASE",
@@ -43,7 +45,10 @@ def find_patient(name: str) -> list[tuple[str, str]]:
 
 
 def add_stock(
-    drug: str, units: int, expiry: str, batch_log: list[tuple[str, int]] | None = None
+    drug: str,
+    units: int,
+    expiry: str,
+    batch_log: list[tuple[str, int]] | None = None,
 ) -> int:
     """Add medicine units and return the number of recorded batches."""
     if units <= 0:
@@ -64,7 +69,7 @@ def add_stock(
 
 
 def dispense(patient_name: str, drug: str, units: int) -> bool:
-    """Dispense medicine only when the patient, stock, and allergy checks pass."""
+    """Dispense medicine only when patient, stock, and allergy checks pass."""
     if units <= 0:
         print("Dispense quantity must be positive.")
         return False
@@ -186,7 +191,9 @@ def main() -> None:
     print("Meena gets ibuprofen:", dispense("Meena", "Ibuprofen", 2))
     print("Unknown patient:", dispense("Ghost", "Paracetamol", 5))
 
-    name = input("Patient name to look up (Enter for Arjun): ").strip() or "Arjun"
+    name = (
+        input("Patient name to look up (Enter for Arjun): ").strip() or "Arjun"
+    )
     print("Lookup result:", find_patient(name))
     print("Expiring within 30 days:", expiring_soon())
     export_prescriptions()
